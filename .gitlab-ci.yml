@@ -46,8 +46,8 @@ typescript_compile:
     name: development
   when: manual
   script:
-    - tsc --showConfig true
-    - tsc
+    - tsc --showConfig true --project pages-tsconfig.json
+    - tsc --project pages-tsconfig.json
     - ls -a -R "$DEV_DIR"
     - ls -a -R "./src/scripts"
     
@@ -73,10 +73,14 @@ code_review:
   when: manual
   stage: build
   script: 
-    - tsc --showConfig true
-    - tsc
+    - cp ./src/index.html $DEV_DIR/index.html
+    - cp ./src/index.html $PROD_DIR/index.html
+    - tsc --showConfig true --project pages-tsconfig.json
+    - tsc --project pages-tsconfig.json
+    - tsc --showConfig true --project dev-tsconfig.json
+    - tsc --project dev-tsconfig.json
     - ls -a -R "$DEV_DIR"
-    - ls -a -R "./src/scripts"
+    - ls -a -R "$PROD_DIR"
     - git add .
     - git commit -m "Javascript Project Code Review"
     - git push --force "https://${GITLAB_USER_NAME}:${CI_GIT_TOKEN}@${CI_REPOSITORY_URL#*@}" "HEAD:$CI_COMMIT_TAG"
