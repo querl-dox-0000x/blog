@@ -66,21 +66,17 @@ code_review:
     name: "code_review"
     expire_in: "1 day"
     paths:
-      - ./prod/
-      - ./dev/
+      #- ./prod/
+      #- ./dev/
   variables:
     CI_COMMIT_TAG: "code_review"
   when: manual
   stage: build
   script: 
-    - cp ./src/index.html ./dev/index.html
-    - cp ./src/index.html ./prod/index.html
-    - coffee --compile --map --output dev/scripts/ src/coffee/ 
-    - coffee --compile --map --output prod/scripts/ src/coffee/ 
-    - node-sass --source-map true --output-style nested --output ./dev/styles src/styles/sass/main.scss
-    - node-sass --source-map true --output-style nested --output ./public/styles src/styles/sass/main.scss
-    - ls -a -R ./prod/
-    - ls -a -R ./dev/
+    - tsc --showConfig true
+    - tsc
+    - ls -a -R "$DEV_DIR"
+    - ls -a -R "./src/scripts"
     - git add .
     - git commit -m "Javascript Project Code Review"
     - git push --force "https://${GITLAB_USER_NAME}:${CI_GIT_TOKEN}@${CI_REPOSITORY_URL#*@}" "HEAD:$CI_COMMIT_TAG"
