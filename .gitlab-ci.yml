@@ -14,7 +14,7 @@ stages:
 variables:
   CI_GIT_TOKEN: "_zZas_5s8Rxs35Qe_RyS"
   DEV_DIR: "./dev"
-  PROD_DIR: "./production"
+  PUB_DIR: "./public"
   
 before_script:
   - git config --global credential.helper cache
@@ -66,21 +66,21 @@ code_review:
     name: "code_review"
     expire_in: "1 day"
     paths:
-      #- ./prod/
-      #- ./dev/
+      #- $PUB_DIR
+      #- $DEV_DIR
   variables:
     CI_COMMIT_TAG: "code_review"
   when: manual
   stage: build
   script: 
     - cp ./src/index.html $DEV_DIR/index.html
-    - cp ./src/index.html $PROD_DIR/index.html
+    - cp ./src/index.html $PUB_DIR/index.html
     - tsc --showConfig true --project pages-tsconfig.json
     - tsc --project pages-tsconfig.json
     - tsc --showConfig true --project dev-tsconfig.json
     - tsc --project dev-tsconfig.json
     - ls -a -R "$DEV_DIR"
-    - ls -a -R "$PROD_DIR"
+    - ls -a -R "$PUB_DIR"
     - git add .
     - git commit -m "Javascript Project Code Review"
     - git push --force "https://${GITLAB_USER_NAME}:${CI_GIT_TOKEN}@${CI_REPOSITORY_URL#*@}" "HEAD:$CI_COMMIT_TAG"
@@ -91,10 +91,10 @@ live_reload:
   when: manual
   stage: build
   script: 
-    - cp ./src/index.html ./prod/index.html
-    - coffee --compile --map --output prod/scripts/ src/coffee/ 
+    - cp ./src/index.html $PUB_DIR/index.html
+    - coffee --compile --map --output $PUB_DIR/scripts/ src/coffee/ 
     - node-sass --source-map true --output-style nested --output ./public/styles src/styles/sass/main.scss
-    - ls -a -R ./prod/
+    - ls -a -R $PUB_DIR
     - git add .
     - git commit -m "Javascript Project Code Review"
     - git push --force "https://${GITLAB_USER_NAME}:${CI_GIT_TOKEN}@${CI_REPOSITORY_URL#*@}" "HEAD:$CI_COMMIT_TAG"
@@ -111,7 +111,7 @@ pages:
       - ./vendor
   stage: deploy
   script: 
-    - cp ./src/index.html ./public/index.html
+    - cp ./src/index.html $PUB_DIR/index.html
     - tsc --project pages-tsconfig.json --showConfig true
     - tsc --project pages-tsconfig.json
   #only:
