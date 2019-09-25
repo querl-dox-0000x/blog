@@ -1,0 +1,14 @@
+{
+    "compilerOptions": {
+        "diagnostics": true,
+        "extendedDiagnostics": true,
+        "listFiles": true,
+        "outDir": "./dev/scripts",
+        "pretty": true,
+        "sourceMap": true,
+        "target": "esnext"
+    },
+    "files": [
+        "./src/scripts/greeter.ts"
+    ]
+}
