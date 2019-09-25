@@ -31,6 +31,17 @@ version_check:
     - node-sass --version
     - coffee --version
     - terser --version
+    - typescript --version
+    
+typescript_compile:
+  variables:
+    TSC_FILE: "./src/scripts/greeter.ts"
+  stage: test
+  environment:
+    name: development
+  when: manual
+  script:
+    - tsc $TSC_FILE
 
 terser:js:devlopment:
   when: manual
