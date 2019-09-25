@@ -13,7 +13,9 @@ stages:
 
 variables:
   CI_GIT_TOKEN: "_zZas_5s8Rxs35Qe_RyS"
-
+  DEV_DIR: "./dev"
+  PROD_DIR: "./production"
+  
 before_script:
   - git config --global credential.helper cache
   - git config --global user.email querl.dox.protonmail.com
@@ -38,12 +40,12 @@ typescript_compile:
     name: "tsc"
     expire_in: "1 day"
     paths:
-      - ./dev/scripts
+      - "$DEV_DIR/scripts"
   variables:
     TSC_FILE: "./src/scripts/greeter.ts"
     TSC_DIAG: "--diagnostics true"
     TSC_LS_FILES: "--listFiles true"
-    TSC_OUT_DIR: "--outDir ./dev/scripts"
+    TSC_OUT_DIR: "--outDir $DEV_DIR/scripts"
     TSC_OUT_FILE: "--outFile compiled.js"
     TSC_PRETTY: "--pretty true"
     TSC_SHOW_CFG: "--showConfig false"
@@ -56,7 +58,7 @@ typescript_compile:
   when: manual
   script:
     - tsc $TSC_DIAG $TSC_LS_FILES $TSC_OUT_DIR $TSC_OUT_FILE $TSC_PRETTY $TSC_SHOW_CFG $TSC_SRC_MAP $TSC_TARGET $TSC_FILE
-    - ls -a -R "$TSC_OUT_DIR"
+    - ls -a -R "$DEV_DIR"
 
 terser:js:devlopment:
   when: manual
