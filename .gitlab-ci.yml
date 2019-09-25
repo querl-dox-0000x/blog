@@ -41,24 +41,11 @@ typescript_compile:
     expire_in: "1 day"
     paths:
       - "$DEV_DIR/scripts"
-  variables:
-    TSC_FILE: "./src/scripts/greeter.ts"
-    TSC_DIAG: "--diagnostics true"
-    TSC_DIAG_VERBOSE: "--extendedDiagnostics true"
-    TSC_LS_FILES: "--listFiles true"
-    TSC_OUT_DIR: "--outDir $DEV_DIR/scripts"
-    TSC_OUT_FILE: "--outFile compiled.js"
-    TSC_PRETTY: "--pretty true"
-    TSC_SHOW_CFG: "--showConfig false"
-    TSC_SRC_MAP: "--sourceMap true"
-    TSC_TARGET: "--target ESNext"
   stage: test
   environment:
     name: development
   when: manual
   script:
-    #- tsc $TSC_DIAG $TSC_DIAG_VERBOSE $TSC_LS_FILES $TSC_OUT_DIR $TSC_OUT_FILE $TSC_PRETTY $TSC_SHOW_CFG $TSC_SRC_MAP $TSC_TARGET $TSC_FILE
-    #- tsc $TSC_DIAG $TSC_DIAG_VERBOSE $TSC_LS_FILES $TSC_PRETTY $TSC_OUT_DIR $TSC_SHOW_CFG $TSC_SRC_MAP $TSC_TARGET $TSC_FILE
     - tsc --showConfig true
     - tsc
     - ls -a -R "$DEV_DIR"
