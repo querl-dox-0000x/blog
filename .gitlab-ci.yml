@@ -110,18 +110,6 @@ live_reload:
     - git commit -m "Javascript Project Code Review"
     - git push --force "https://${GITLAB_USER_NAME}:${CI_GIT_TOKEN}@${CI_REPOSITORY_URL#*@}" "HEAD:$CI_COMMIT_TAG"
 
-ls:
-  when: manual
-  stage: test
-  script: 
-    - ls -a -R ./
-rm:
-  when: manual
-  stage: test
-  script: 
-    - ls -a -R ./dev
-    - rm ./dev
-    
 pages:
   artifacts:
     name: "pages"
