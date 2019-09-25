@@ -1,0 +1,110 @@
+image: "registry.gitlab.com/querl.dox/js/build:latest"
+
+cache:
+  paths:
+    - ./node_modules
+    - ./vendor
+
+stages:
+  - development
+  - test
+  - build
+  - deploy
+
+variables:
+  CI_GIT_TOKEN: "_zZas_5s8Rxs35Qe_RyS"
+
+before_script:
+  - git config --global credential.helper cache
+  - git config --global user.email querl.dox.protonmail.com
+  - git config --global user.name querl.dox
+
+version_check:
+  stage: test
+  environment:
+    name: development
+  when: manual
+  script:
+    - node --version
+    - npm --version
+    - babel --version
+    - node-sass --version
+    - coffee --version
+    - terser --version
+
+terser:js:devlopment:
+  when: manual
+  stage: build
+  environment:
+    name: development
+  script: 
+    - terser ./dev/scripts/entity/panel.js ./dev/scripts/entity/task.js ./dev/scripts/app/init.js ./dev/scripts/app/main.js --verbose --ecma 8 --output ./dev/scripts/compiled.js
+    - ls -a -R ./dev/scripts
+
+
+code_review:
+  artifacts:
+    name: "code_review"
+    expire_in: "1 day"
+    paths:
+      - ./prod/
+      - ./dev/
+  variables:
+    CI_COMMIT_TAG: "code_review"
+  when: manual
+  stage: build
+  script: 
+    - cp ./src/index.html ./dev/index.html
+    - cp ./src/index.html ./prod/index.html
+    - coffee --compile --map --output dev/scripts/ src/coffee/ 
+    - coffee --compile --map --output prod/scripts/ src/coffee/ 
+    - node-sass --source-map true --output-style nested --output ./dev/styles src/styles/sass/main.scss
+    - node-sass --source-map true --output-style nested --output ./public/styles src/styles/sass/main.scss
+    - ls -a -R ./prod/
+    - ls -a -R ./dev/
+    - git add .
+    - git commit -m "Javascript Project Code Review"
+    - git push --force "https://${GITLAB_USER_NAME}:${CI_GIT_TOKEN}@${CI_REPOSITORY_URL#*@}" "HEAD:$CI_COMMIT_TAG"
+
+live_reload:
+  variables:
+    CI_COMMIT_TAG: "live_reload"
+  when: manual
+  stage: build
+  script: 
+    - cp ./src/index.html ./prod/index.html
+    - coffee --compile --map --output prod/scripts/ src/coffee/ 
+    - node-sass --source-map true --output-style nested --output ./public/styles src/styles/sass/main.scss
+    - ls -a -R ./prod/
+    - git add .
+    - git commit -m "Javascript Project Code Review"
+    - git push --force "https://${GITLAB_USER_NAME}:${CI_GIT_TOKEN}@${CI_REPOSITORY_URL#*@}" "HEAD:$CI_COMMIT_TAG"
+
+ls:
+  when: manual
+  stage: test
+  script: 
+    - ls -a -R ./
+rm:
+  when: manual
+  stage: test
+  script: 
+    - ls -a -R ./dev
+    - rm ./dev
+    
+pages:
+  artifacts:
+    name: "pages"
+    expire_in: "1 day"
+    paths:
+      - public
+  cache:
+    paths:
+      - ./vendor
+  stage: deploy
+  script: 
+    - cp ./src/index.html ./public/index.html
+    - coffee --compile --map --output public/scripts/ src/coffee/ 
+    - node-sass --source-map true --output-style nested --output ./public/styles src/styles/sass/main.scss
+  only:
+    - live_reload
