@@ -31,7 +31,7 @@ version_check:
     - node-sass --version
     - coffee --version
     - terser --version
-    - typescript --version
+    - tsc --version
     
 typescript_compile:
   variables:
