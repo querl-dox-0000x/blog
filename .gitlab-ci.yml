@@ -96,6 +96,7 @@ live_reload:
     - git push --force "https://${GITLAB_USER_NAME}:${CI_GIT_TOKEN}@${CI_REPOSITORY_URL#*@}" "HEAD:$CI_COMMIT_TAG"
 
 pages:
+  when: manual
   artifacts:
     name: "pages"
     expire_in: "1 day"
@@ -107,7 +108,7 @@ pages:
   stage: deploy
   script: 
     - cp ./src/index.html ./public/index.html
-    - coffee --compile --map --output public/scripts/ src/coffee/ 
-    - node-sass --source-map true --output-style nested --output ./public/styles src/styles/sass/main.scss
-  only:
-    - live_reload
+    - tsc --project pages-tsconfig.json --showConfig true
+    - tsc --project pages-tsconfig.json
+  #only:
+    #- live_reload
