@@ -51,7 +51,6 @@ typescript_compile:
     TSC_SHOW_CFG: "--showConfig false"
     TSC_SRC_MAP: "--sourceMap true"
     TSC_TARGET: "--target ESNext"
-
   stage: test
   environment:
     name: development
@@ -59,7 +58,8 @@ typescript_compile:
   script:
     - tsc $TSC_DIAG $TSC_LS_FILES $TSC_OUT_DIR $TSC_OUT_FILE $TSC_PRETTY $TSC_SHOW_CFG $TSC_SRC_MAP $TSC_TARGET $TSC_FILE
     - ls -a -R "$DEV_DIR"
-
+    - ls -a -R "./src/scripts"
+    
 terser:js:devlopment:
   when: manual
   stage: build
