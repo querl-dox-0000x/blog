@@ -44,6 +44,7 @@ typescript_compile:
   variables:
     TSC_FILE: "./src/scripts/greeter.ts"
     TSC_DIAG: "--diagnostics true"
+    TSC_DIAG_VERBOSE: "--extendedDiagnostics true"
     TSC_LS_FILES: "--listFiles true"
     TSC_OUT_DIR: "--outDir $DEV_DIR/scripts"
     TSC_OUT_FILE: "--outFile compiled.js"
@@ -56,7 +57,8 @@ typescript_compile:
     name: development
   when: manual
   script:
-    - tsc $TSC_DIAG $TSC_LS_FILES $TSC_OUT_DIR $TSC_OUT_FILE $TSC_PRETTY $TSC_SHOW_CFG $TSC_SRC_MAP $TSC_TARGET $TSC_FILE
+    #- tsc $TSC_DIAG $TSC_DIAG_VERBOSE $TSC_LS_FILES $TSC_OUT_DIR $TSC_OUT_FILE $TSC_PRETTY $TSC_SHOW_CFG $TSC_SRC_MAP $TSC_TARGET $TSC_FILE
+    - tsc $TSC_DIAG $TSC_DIAG_VERBOSE $TSC_LS_FILES $TSC_PRETTY $TSC_SHOW_CFG $TSC_SRC_MAP $TSC_TARGET $TSC_FILE
     - ls -a -R "$DEV_DIR"
     - ls -a -R "./src/scripts"
     
