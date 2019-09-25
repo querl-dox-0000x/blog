@@ -49,7 +49,7 @@ typescript_compile:
     TSC_OUT_DIR: "--outDir $DEV_DIR/scripts"
     TSC_OUT_FILE: "--outFile compiled.js"
     TSC_PRETTY: "--pretty true"
-    TSC_SHOW_CFG: "--showConfig false"
+    TSC_SHOW_CFG: "--showConfig true"
     TSC_SRC_MAP: "--sourceMap true"
     TSC_TARGET: "--target ESNext"
   stage: test
