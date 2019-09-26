@@ -59,8 +59,8 @@ code_review:
     CI_COMMIT_TAG: "code_review"
   stage: build
   script: 
-    - cp ./src/index.html $DEV_DIR/index.html
-    - cp ./src/index.html $PUB_DIR/index.html
+    - cp -R ./src/assets $DEV_DIR/assets
+    - cp -R ./src/assets $PUB_DIR/assets
     - tsc --showConfig true --project pages-tsconfig.json
     - tsc --project pages-tsconfig.json
     - tsc --showConfig true --project dev-tsconfig.json
