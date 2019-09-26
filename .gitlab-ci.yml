@@ -44,7 +44,7 @@ typescript_compile:
   stage: test
   environment:
     name: development
-  when: manual
+  #when: manual
   script:
     - tsc --showConfig true --project dev-tsconfig.json
     - tsc --project dev-tsconfig.json
