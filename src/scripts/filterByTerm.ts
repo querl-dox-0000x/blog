@@ -7,4 +7,4 @@ function filterByTerm(input: Array<string>, searchTerm: string) {
     });    
 }
 
-filterByTerm("input string", "java");
+filterByTerm(["string1", "string2", "string3"], "java");
