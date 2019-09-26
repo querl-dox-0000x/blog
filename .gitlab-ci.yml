@@ -69,7 +69,7 @@ tsc_commit_message:
     variables:
     - $CI_COMMIT_MESSAGE =~ /tsc/    
     
-tsc_folder:
+tsc_dir_watch:
   stage: test
   environment:
     name: development
