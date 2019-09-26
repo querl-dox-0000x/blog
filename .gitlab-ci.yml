@@ -72,7 +72,7 @@ code_review:
     - git push --force "https://${GITLAB_USER_NAME}:${CI_GIT_TOKEN}@${CI_REPOSITORY_URL#*@}" "HEAD:$CI_COMMIT_TAG"
   only:
     variables:
-    - $CI_COMMIT_MESSAGE =~ /git push/   
+    - $CI_COMMIT_MESSAGE =~ /code review/   
 
 pages:
   when: manual
