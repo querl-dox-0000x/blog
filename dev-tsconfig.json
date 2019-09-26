@@ -6,7 +6,8 @@
         "outDir": "./dev/scripts",
         "pretty": true,
         "sourceMap": true,
-        "target": "esnext"
+        "strict": true,
+        "target": "es5"
     },
     "files": [
         "./src/scripts/greeter.ts"
