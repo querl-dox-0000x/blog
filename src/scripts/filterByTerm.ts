@@ -1,4 +1,8 @@
-function filterByTerm(input: Array<object>, searchTerm: string) {
+interface ILink {
+    url: string;
+}
+
+function filterByTerm(input: Array<ILink>, searchTerm: string) {
     if (!searchTerm) throw Error("searchTerm cannot be empty");
     if (!input.length) throw Error("input cannot be empty");
     const regex = new RegExp(searchTerm, "i");
