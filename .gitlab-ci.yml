@@ -89,5 +89,6 @@ pages:
     - cp ./src/index.html $PUB_DIR/index.html
     - tsc --project pages-tsconfig.json --showConfig true
     - tsc --project pages-tsconfig.json
-  #only:
-    #- live_reload
+  only:
+    variables:
+    - $CI_COMMIT_MESSAGE =~ /pages/   
