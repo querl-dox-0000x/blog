@@ -6,9 +6,10 @@
         "outDir": "./public/scripts",
         "pretty": true,
         "sourceMap": false,
-        "target": "esnext"
+        "strict": true,
+        "target": "es5"
     },
-    "files": [
-        "./src/scripts/greeter.ts"
+    "include": [
+        "src/scripts/**/*"
     ]
 }
