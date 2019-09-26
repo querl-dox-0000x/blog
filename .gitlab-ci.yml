@@ -51,10 +51,7 @@ typescript_compile:
     - ls -a -R "$DEV_DIR"
     - ls -a -R "./src/scripts"
     - ls -a -R "./dev/scripts"
-  only:
-    variables:
-    - $CI_COMMIT_MESSAGE =~ /tsc/
-    
+
 tsc_commit_message:
   stage: test
   environment:
