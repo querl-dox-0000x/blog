@@ -46,21 +46,13 @@ typescript_compile:
     name: development
   when: manual
   script:
-    - tsc --showConfig true --project pages-tsconfig.json
-    - tsc --project pages-tsconfig.json
+    - tsc --showConfig true --project dev-tsconfig.json
+    - tsc --project dev-tsconfig.json
     - ls -a -R "$DEV_DIR"
     - ls -a -R "./src/scripts"
+    - ls -a -R "./dev/scripts"
+
     
-terser:js:devlopment:
-  when: manual
-  stage: build
-  environment:
-    name: development
-  script: 
-    - terser ./dev/scripts/entity/panel.js ./dev/scripts/entity/task.js ./dev/scripts/app/init.js ./dev/scripts/app/main.js --verbose --ecma 8 --output ./dev/scripts/compiled.js
-    - ls -a -R ./dev/scripts
-
-
 code_review:
   artifacts:
     name: "code_review"
@@ -81,20 +73,6 @@ code_review:
     - tsc --project dev-tsconfig.json
     - ls -a -R "$DEV_DIR"
     - ls -a -R "$PUB_DIR"
-    - git add .
-    - git commit -m "Javascript Project Code Review"
-    - git push --force "https://${GITLAB_USER_NAME}:${CI_GIT_TOKEN}@${CI_REPOSITORY_URL#*@}" "HEAD:$CI_COMMIT_TAG"
-
-live_reload:
-  variables:
-    CI_COMMIT_TAG: "live_reload"
-  when: manual
-  stage: build
-  script: 
-    - cp ./src/index.html $PUB_DIR/index.html
-    - coffee --compile --map --output $PUB_DIR/scripts/ src/coffee/ 
-    - node-sass --source-map true --output-style nested --output ./public/styles src/styles/sass/main.scss
-    - ls -a -R $PUB_DIR
     - git add .
     - git commit -m "Javascript Project Code Review"
     - git push --force "https://${GITLAB_USER_NAME}:${CI_GIT_TOKEN}@${CI_REPOSITORY_URL#*@}" "HEAD:$CI_COMMIT_TAG"
