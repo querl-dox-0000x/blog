@@ -44,13 +44,44 @@ typescript_compile:
   stage: test
   environment:
     name: development
-  #when: manual
+  when: manual
   script:
     - tsc --showConfig true --project dev-tsconfig.json
     - tsc --project dev-tsconfig.json
     - ls -a -R "$DEV_DIR"
     - ls -a -R "./src/scripts"
     - ls -a -R "./dev/scripts"
+  only:
+    variables:
+    - $CI_COMMIT_MESSAGE =~ /tsc/
+    
+tsc_commit_message:
+  stage: test
+  environment:
+    name: development
+  script:
+    - tsc --showConfig true --project dev-tsconfig.json
+    - tsc --project dev-tsconfig.json
+    - ls -a -R "$DEV_DIR"
+    - ls -a -R "./src/scripts"
+    - ls -a -R "./dev/scripts"
+  only:
+    variables:
+    - $CI_COMMIT_MESSAGE =~ /tsc/    
+    
+tsc_folder:
+  stage: test
+  environment:
+    name: development
+  script:
+    - tsc --showConfig true --project dev-tsconfig.json
+    - tsc --project dev-tsconfig.json
+    - ls -a -R "$DEV_DIR"
+    - ls -a -R "./src/scripts"
+    - ls -a -R "./dev/scripts"
+  only:
+    changes:
+    - src/scripts/*.{ts}
 
     
 code_review:
