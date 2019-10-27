@@ -2,7 +2,7 @@
   "name": "notes_app",
   "version": "1.0.0",
   "description": "A simple notes app with Grunt.js and CoffeeScript",
-  "main": "dist/index.html",
+  "main": "public/index.html",
   "keywords": [
     "gruntjs",
     "coffeescript",
