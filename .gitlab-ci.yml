@@ -11,7 +11,7 @@ stages:
   - deploy
 
 variables:
-  CI_GIT_TOKEN: "_zZas_5s8Rxs35Qe_RyS"
+  CI_GIT_TOKEN: "MoLyrsR7BVecs6Ek8JuD"
   DEV_DIR: "./dev"
   PUB_DIR: "./public"
   J2_IN: "src/templates/simple.j2"
@@ -78,14 +78,14 @@ code_review:
     J2_DATA: "src/templates/blog.yaml"
     J2_OUT: "$DEV_DIR/index.html"
     J2_FORMAT: "yaml"
+    CI_COMMIT_TAG: "v0.1.8"
+
   artifacts:
     name: "code_review"
     expire_in: "1 day"
     paths:
-      #- $PUB_DIR
-      #- $DEV_DIR
-  variables:
-    CI_COMMIT_TAG: "code_review"
+      - $PUB_DIR
+      - $DEV_DIR
   image: "registry.gitlab.com/querl.dox/python/build:jinja2"
   stage: build
   script: 
