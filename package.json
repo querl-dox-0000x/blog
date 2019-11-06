@@ -1,15 +1,14 @@
 {
-  "name": "notes_app",
+  "name": "jinja2_dev",
   "version": "1.0.0",
-  "description": "A simple notes app with Grunt.js and CoffeeScript",
-  "main": "src/index.html",
+  "description": "jinja2 testing",
+  "main": "dev/index.html",
   "keywords": [
-    "gruntjs",
-    "coffeescript",
-    "npm",
-    "js"
+    "jinja2"
   ],
   "author": "querl.dox.0000x",
   "license": "ISC",
-
+  "devDependencies": {
+    "serve": "^11.2.0"
+  }
 }

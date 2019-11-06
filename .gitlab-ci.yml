@@ -6,7 +6,6 @@ cache:
     - ./vendor
 
 stages:
-  - development
   - test
   - build
   - deploy
@@ -35,18 +34,15 @@ version_check:
     - terser --version
     - tsc --version
     
-typescript_compile:watcher:
-  stage: test
-  environment:
-    name: development
+jinja:
+  image: "python:alpine"
+  stage: build
   script:
     - tsc --showConfig true --project dev-tsconfig.json
-    - tsc --project dev-tsconfig.json
     - ls -a -R "$DEV_DIR"
   only:
     changes:
-    - src/scripts/*.{ts}
-
+    - src/templates/*.{j2}
     
 code_review:
   artifacts:
