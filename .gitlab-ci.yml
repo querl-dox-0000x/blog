@@ -101,6 +101,11 @@ code_review:
     - $CI_COMMIT_MESSAGE =~ /code review/   
 
 pages:
+  variables:
+    J2_IN: "src/templates/index.html"
+    J2_DATA: "src/templates/blog.yaml"
+    J2_OUT: "$PUB_DIR/index.html"
+    J2_FORMAT: "yaml"
   when: manual
   artifacts:
     name: "pages"
@@ -110,11 +115,12 @@ pages:
   cache:
     paths:
       - ./vendor
+  image: "registry.gitlab.com/querl.dox/python/build:jinja2"
   stage: deploy
   script: 
+    - cp -R ./src/styles $PUB_DIR
     - cp ./src/index.html $PUB_DIR/index.html
-    - tsc --project pages-tsconfig.json --showConfig true
-    - tsc --project pages-tsconfig.json
+    - jinja2 $J2_IN $J2_DATA --outfile=$J2_OUT --format=$J2_FORMAT
   only:
     variables:
     - $CI_COMMIT_MESSAGE =~ /pages/   
