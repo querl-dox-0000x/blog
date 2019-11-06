@@ -15,8 +15,9 @@ variables:
   DEV_DIR: "./dev"
   PUB_DIR: "./public"
   J2_IN: "src/templates/simple.j2"
+  J2_DATA: "src/templates/t1.yaml"
   J2_OUT: "$DEV_DIR/simple.html"
-  J2_FORMAT: ""
+  J2_FORMAT: "yaml"
   
 before_script:
   - git config --global credential.helper cache
@@ -47,7 +48,7 @@ jinja2:
   image: "registry.gitlab.com/querl.dox/python/build:jinja2"
   stage: build
   script:
-    - jinja2 $J2_IN --outfile=$J2_OUT --format=$J2_FORMAT
+    - jinja2 $J2_IN $J2_DATA --outfile=$J2_OUT --format=$J2_FORMAT
     - ls -a -R "$DEV_DIR"
   #only:
   #  changes:
