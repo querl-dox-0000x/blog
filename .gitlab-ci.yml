@@ -14,7 +14,7 @@ variables:
   CI_GIT_TOKEN: "_zZas_5s8Rxs35Qe_RyS"
   DEV_DIR: "./dev"
   PUB_DIR: "./public"
-  J2_IN: "simple.j2"
+  J2_IN: "src/templates/simple.j2"
   J2_OUT: "$DEV_DIR/simple.html"
   J2_FORMAT: "yaml"
   
