@@ -3,7 +3,7 @@ image: "registry.gitlab.com/querl.dox/js/build:latest"
 cache:
   paths:
     - ./node_modules
-    - ./vendor
+    #- ./vendor
 
 stages:
   - test
@@ -14,6 +14,9 @@ variables:
   CI_GIT_TOKEN: "_zZas_5s8Rxs35Qe_RyS"
   DEV_DIR: "./dev"
   PUB_DIR: "./public"
+  J2_IN: "simple.j2"
+  J2_OUT: "$DEV_DIR/simple.html"
+  J2_FORMAT: "yaml"
   
 before_script:
   - git config --global credential.helper cache
@@ -34,15 +37,21 @@ version_check:
     - terser --version
     - tsc --version
     
-jinja:
-  image: "python:alpine"
+jinja2:
+  when: manual
+  artifacts:
+    name: "jinja_template"
+    expire_in: "1 day"
+    paths:
+      - $DEV_DIR
+  image: "registry.gitlab.com/querl.dox/python/build:jinja2"
   stage: build
   script:
-    - tsc --showConfig true --project dev-tsconfig.json
+    - jinja2 $J2_IN --outfile=$J2_OUT
     - ls -a -R "$DEV_DIR"
-  only:
-    changes:
-    - src/templates/*.{j2}
+  #only:
+  #  changes:
+  #  - src/templates/*.{j2}
     
 code_review:
   artifacts:
