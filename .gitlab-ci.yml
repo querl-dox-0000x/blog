@@ -78,8 +78,7 @@ code_review:
     J2_DATA: "src/templates/blog.yaml"
     J2_OUT: "$DEV_DIR/index.html"
     J2_FORMAT: "yaml"
-    CI_COMMIT_TAG: "v0.1.8"
-
+    CI_COMMIT_TAG: "v0.1.9"
   artifacts:
     name: "code_review"
     expire_in: "1 day"
@@ -89,8 +88,8 @@ code_review:
   image: "registry.gitlab.com/querl.dox/python/build:jinja2"
   stage: build
   script: 
-    - cp -R ./src/styles $DEV_DIR/styles
-    - cp -R ./src/styles $PUB_DIR/styles
+    - cp -R ./src/styles $DEV_DIR
+    - cp -R ./src/styles $PUB_DIR
     - jinja2 $J2_IN --outfile=$J2_OUT
     - ls -a -R "$DEV_DIR"
     - ls -a -R "$PUB_DIR"
