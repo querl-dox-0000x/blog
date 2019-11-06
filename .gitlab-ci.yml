@@ -37,7 +37,25 @@ version_check:
     - coffee --version
     - terser --version
     - tsc --version
-    
+
+jinja2_blog:
+  variables:
+    J2_IN: "src/templates/index.html"
+    J2_DATA: "src/templates/blog.yaml"
+    J2_OUT: "$DEV_DIR/index.html"
+    J2_FORMAT: "yaml"
+  when: manual
+  artifacts:
+    name: "jinja_template"
+    expire_in: "1 day"
+    paths:
+      - $DEV_DIR
+  image: "registry.gitlab.com/querl.dox/python/build:jinja2"
+  stage: build
+  script:
+    - jinja2 $J2_IN $J2_DATA --outfile=$J2_OUT
+    - ls -a -R "$DEV_DIR"
+
 jinja2:
   when: manual
   artifacts:
