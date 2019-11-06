@@ -53,7 +53,7 @@ jinja2_blog:
   image: "registry.gitlab.com/querl.dox/python/build:jinja2"
   stage: build
   script:
-    - jinja2 $J2_IN $J2_DATA --outfile=$J2_OUT
+    - jinja2 $J2_IN --outfile=$J2_OUT
     - ls -a -R "$DEV_DIR"
 
 jinja2:
