@@ -106,7 +106,6 @@ pages:
     J2_DATA: "src/templates/blog.yaml"
     J2_OUT: "$PUB_DIR/index.html"
     J2_FORMAT: "yaml"
-  when: manual
   artifacts:
     name: "pages"
     expire_in: "1 day"
@@ -119,7 +118,6 @@ pages:
   stage: deploy
   script: 
     - cp -R ./src/styles $PUB_DIR
-    - cp ./src/index.html $PUB_DIR/index.html
     - jinja2 $J2_IN $J2_DATA --outfile=$J2_OUT --format=$J2_FORMAT
   only:
     variables:
