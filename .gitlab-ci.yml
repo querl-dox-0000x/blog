@@ -118,7 +118,7 @@ pages:
   stage: deploy
   script: 
     - cp -R ./src/styles $PUB_DIR
-    - jinja2 $J2_IN $J2_DATA --outfile=$J2_OUT --format=$J2_FORMAT
+    - jinja2 $J2_IN --outfile=$J2_OUT
   only:
     variables:
     - $CI_COMMIT_MESSAGE =~ /pages/   
