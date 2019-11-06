@@ -1,13 +1,15 @@
-<div id="layout" class="pure-g">
-    <div class="sidebar pure-u-1 pure-u-md-1-4">
-        {% include '_header.html' %}  
-    </div>
-    <div class="content pure-u-1 pure-u-md-3-4">
-        <div>
-            <!-- A wrapper for all the blog posts -->
-            {% include 'posts/_pinned.html' %}
-            {% include 'posts/_recent.html' %}
-            {% include '_footer.html' %}
+<body>
+    <div id="layout" class="pure-g">
+        <div class="sidebar pure-u-1 pure-u-md-1-4">
+            {% include '_header.html' %}  
         </div>
     </div>
-</div>
+    <div class="content pure-u-1 pure-u-md-3-4">
+            <div>
+                <!-- A wrapper for all the blog posts -->
+                {% include 'posts/_pinned.html' %}
+                {% include 'posts/_recent.html' %}
+                {% include '_footer.html' %}
+            </div>
+    </div>
+</body>
