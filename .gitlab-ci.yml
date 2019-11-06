@@ -118,6 +118,7 @@ pages:
   stage: deploy
   script: 
     - cp -R ./src/styles $PUB_DIR
+    - cp -R ./assets $PUB_DIR
     - jinja2 $J2_IN --outfile=$J2_OUT
   only:
     variables:
