@@ -123,21 +123,3 @@ pages:
   only:
     variables:
     - $CI_COMMIT_MESSAGE =~ /pages/   
-
-copy:
-  when: manual
-  variables:
-    CI_COMMIT_TAG: "v0.1.13"
-  stage: build
-  script: 
-    - git clone https://gitlab.com/querl.dox/clarence-daniels-jr/notes_to_the_future/blog
-    - cd blog
-    - git checkout v0.1.4
-    - cd ../
-    - mkdir $DEV_DIR/tmp
-    - cp -R ./blog/public/posts $DEV_DIR/tmp
-    - ls -a -R $DEV_DIR
-    - rm -r ./blog
-    - git add .
-    - git commit -m "Project Code Review"
-    - git push --force "https://${GITLAB_USER_NAME}:${CI_GIT_TOKEN}@${CI_REPOSITORY_URL#*@}" "HEAD:$CI_COMMIT_TAG"  
