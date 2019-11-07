@@ -122,8 +122,8 @@ pages:
     - cp -R ./assets $PUB_DIR
     - jinja2 $J2_IN $J2_DATA --outfile=$J2_OUT --format=$J2_FORMAT
   only:
-    variables:
-    - $CI_COMMIT_MESSAGE =~ /pages/
+    changes:
+    - src/templates/*.{html}
 
 video_conversion:
   image: jlesage/handbrake
