@@ -132,7 +132,7 @@ video_conversion:
     CI_COMMIT_TAG: "video_conversion"
   stage: build
   script: 
-    - HandBrakeCLI –help
+    - HandBrakeCLI -–help
     - mkdir $DEV_DIR/tmp
     - cp -R src/templates/blog/posts/2019/11/20191104_064332.mp4 $DEV_DIR/tmp/video1.mp4
     - cp -R src/templates/blog/posts/2019/11/20191104_064355.mp4 $DEV_DIR/tmp/video2.mp4
