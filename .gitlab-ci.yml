@@ -131,7 +131,9 @@ copy:
   stage: build
   script: 
     - git clone https://gitlab.com/querl.dox/clarence-daniels-jr/notes_to_the_future/blog
+    - cd blog
     - git checkout v0.1.4
+    - cd ../
     - mkdir $DEV_DIR/tmp
     - cp -R ./blog/public/posts $DEV_DIR/tmp
     - ls -a -R $DEV_DIR
