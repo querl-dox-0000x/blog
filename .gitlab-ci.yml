@@ -123,7 +123,7 @@ pages:
     - jinja2 $J2_IN $J2_DATA --outfile=$J2_OUT --format=$J2_FORMAT
   only:
     changes:
-    - src/templates/*.{html}
+    - src/templates/**/*.{html}
 
 video_conversion:
   image: jlesage/handbrake
