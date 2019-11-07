@@ -138,6 +138,18 @@ video_conversion:
     - HandBrakeCLI -i $DEV_DIR/tmp/video1.mp4 -o $DEV_DIR/tmp/min-video1.mp4 -e x264 -q 28 -r 15 -B 64 -X 1280 -O
     - HandBrakeCLI -i $DEV_DIR/tmp/video2.mp4 -o $DEV_DIR/tmp/min-video2.mp4 -e x264 -q 28 -r 15 -B 64 -X 1280 -O
     - ls -a -R $DEV_DIR
+    - du -h -a "$DEV_DIR" 
     - git add .
     - git commit -m "Project Code Review"
-    - git push --force "https://${GITLAB_USER_NAME}:${CI_GIT_TOKEN}@${CI_REPOSITORY_URL#*@}" "HEAD:$CI_COMMIT_TAG"  
+    - git push --force "https://${GITLAB_USER_NAME}:${CI_GIT_TOKEN}@${CI_REPOSITORY_URL#*@}" "HEAD:$CI_COMMIT_TAG"
+
+du:
+  when: manual
+  artifacts:
+    name: "jinja_template"
+    expire_in: "1 day"
+    paths:
+      - $DEV_DIR
+  stage: test
+  script:
+    - du -h -a "$DEV_DIR" 
