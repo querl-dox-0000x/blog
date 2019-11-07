@@ -90,7 +90,7 @@ code_review:
   script: 
     - cp -R ./src/styles $DEV_DIR
     - cp -R ./src/styles $PUB_DIR
-    - jinja2 $J2_IN --outfile=$J2_OUT
+    - jinja2 $J2_IN $J2_DATA --outfile=$J2_OUT --format=$J2_FORMAT
     - ls -a -R "$DEV_DIR"
     - ls -a -R "$PUB_DIR"
     - git add .
@@ -119,7 +119,7 @@ pages:
   script: 
     - cp -R ./src/styles $PUB_DIR
     - cp -R ./assets $PUB_DIR
-    - jinja2 $J2_IN --outfile=$J2_OUT
+    - jinja2 $J2_IN $J2_DATA --outfile=$J2_OUT --format=$J2_FORMAT
   only:
     variables:
     - $CI_COMMIT_MESSAGE =~ /pages/   
