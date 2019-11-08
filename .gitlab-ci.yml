@@ -143,13 +143,18 @@ video_conversion:
     - git commit -m "Project Code Review"
     - git push --force "https://${GITLAB_USER_NAME}:${CI_GIT_TOKEN}@${CI_REPOSITORY_URL#*@}" "HEAD:$CI_COMMIT_TAG"
 
-du:
+asset_download:
   when: manual
-  artifacts:
-    name: "jinja_template"
-    expire_in: "1 day"
-    paths:
-      - $DEV_DIR
-  stage: test
-  script:
-    - du -h -a "$DEV_DIR" 
+  variables:
+    CI_COMMIT_TAG: "asset_download"
+    WGET_PRE: "$DEV_DIR/tmp"
+  stage: build
+  script: 
+    - mkdir $WGET_PRE
+    - wget --directory-prefix="$WGET_PRE" https://secure.syndetics.com/index.aspx?isbn=9781401230432/MC.GIF&client=chmep&type=xw12&oclc=
+    - wget --directory-prefix="$WGET_PRE" https://secure.syndetics.com/index.aspx?isbn=9780316491341/MC.GIF&client=chmep&type=xw12&oclc=
+    - ls -a -R "$WGET_PRE"
+    - du -h -a "WGET_PRE" 
+    - git add .
+    - git commit -m "Asset Download"
+    - git push --force "https://${GITLAB_USER_NAME}:${CI_GIT_TOKEN}@${CI_REPOSITORY_URL#*@}" "HEAD:$CI_COMMIT_TAG"
