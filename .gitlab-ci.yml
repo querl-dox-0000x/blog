@@ -151,10 +151,10 @@ asset_download:
   stage: build
   script: 
     - mkdir $WGET_PRE
-    - wget --directory-prefix="$WGET_PRE" https://secure.syndetics.com/index.aspx?isbn=9781401230432/MC.GIF&client=chmep&type=xw12&oclc=
-    - wget --directory-prefix="$WGET_PRE" https://secure.syndetics.com/index.aspx?isbn=9780316491341/MC.GIF&client=chmep&type=xw12&oclc=
+    - wget -O "$WGET_PRE/gameofyou.gif" https://secure.syndetics.com/index.aspx?isbn=9781401230432/MC.GIF&client=chmep&type=xw12&oclc=
+    - wget --directory-prefix="$WGET_PRE/blackfuturemonth.gif" https://secure.syndetics.com/index.aspx?isbn=9780316491341/MC.GIF&client=chmep&type=xw12&oclc=
     - ls -a -R "$WGET_PRE"
-    - du -h -a "WGET_PRE" 
+    - du -h -a "$WGET_PRE" 
     - git add .
     - git commit -m "Asset Download"
     - git push --force "https://${GITLAB_USER_NAME}:${CI_GIT_TOKEN}@${CI_REPOSITORY_URL#*@}" "HEAD:$CI_COMMIT_TAG"
