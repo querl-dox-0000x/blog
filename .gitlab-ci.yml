@@ -151,8 +151,8 @@ asset_download:
   stage: build
   script: 
     - mkdir $WGET_PRE
-    - wget -O "$WGET_PRE/gameofyou.gif" https://secure.syndetics.com/index.aspx?isbn=9781401230432/MC.GIF&client=chmep&type=xw12&oclc=
-    - wget --directory-prefix="$WGET_PRE/blackfuturemonth.gif" https://secure.syndetics.com/index.aspx?isbn=9780316491341/MC.GIF&client=chmep&type=xw12&oclc=
+    - wget --directory-prefix="$WGET_PRE" https://images-na.ssl-images-amazon.com/images/I/61aUaQs9MML._SX319_BO1,204,203,200_.jpg
+    - wget --directory-prefix="$WGET_PRE" https://images-na.ssl-images-amazon.com/images/I/51XhaIdxkFL._SX335_BO1,204,203,200_.jpg
     - ls -a -R "$WGET_PRE"
     - du -h -a "$WGET_PRE" 
     - git add .
