@@ -118,7 +118,6 @@ pages:
   image: "registry.gitlab.com/querl.dox/python/build:jinja2"
   stage: deploy
   script: 
-    - cp -R ./src/styles $PUB_DIR
     - cp -R ./assets $PUB_DIR
     - jinja2 $J2_IN $J2_DATA --outfile=$J2_OUT --format=$J2_FORMAT
   only:
