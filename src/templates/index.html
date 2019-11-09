@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+{% include '_head.html' %}
+<body>
+    <div id="layout" class="pure-g">
+        <div class="sidebar pure-u-1 pure-u-md-1-4">
+            {% include '_header.html' %}
+        </div>
+    </div>
+    <div class="content pure-u-1 pure-u-md-3-4">
+            <div>
+                <!-- A wrapper for all the blog posts -->
+                <div class="posts">
+                    <h1 class="content-subhead">Pinned Post</h1>
+                    <!-- A single blog post -->
+                    {% include 'blog/posts/pinned/_just-doing-my-job.html' %}            
+                    {% include 'blog/posts/pinned/_selling-of-souls.html' %} 
+                </div>
+                <div class="posts">
+                    <h1 class="content-subhead">Recent Posts</h1>
+                    <!-- A single blog post -->
+                    <a id="Whole_Foods"></a>
+                    <a id="Poison"></a>
+                    {% include 'blog/posts/2019/06/_wholefoods-sec.html' %} 
+                    <a id="Murder_Attempt"></a>
+                    {% include 'blog/posts/2018/07/_muder-attempt.html' %} 
+                    <a id="Hate_Crime"></a>        
+                    {% include 'blog/posts/2017/12/_hate-crime.html' %}
+                    <a id="An_Assault"></a>
+                    {% include 'blog/posts/2018/04/_assault-on-a-bench.html' %}
+                    <a id="Winter_Is_Coming"></a>
+                    {% include 'blog/posts/2019/11/_winter-is-coming-joke.html' %}
+                    <a id="Uncle_Thomas"></a>
+                    {% include 'blog/posts/2019/09/_uncle-toms-burden.html' %}
+                    {% include 'blog/posts/2019/10/_uncle-toms-burden2.html' %}
+                    <a id="Girl_On_A_Train"></a>
+                    {% include 'blog/posts/2019/11/_girl-on-a-train.html' %}
+                </div>
+            </div>
+    </div>
+</body>
+</html>

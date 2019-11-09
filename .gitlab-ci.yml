@@ -3,20 +3,24 @@ image: "registry.gitlab.com/querl.dox/js/build:latest"
 cache:
   paths:
     - ./node_modules
-    - ./vendor
+    #- ./vendor
 
 stages:
-  - development
   - test
   - build
   - deploy
 
 variables:
-  CI_GIT_TOKEN: "_zZas_5s8Rxs35Qe_RyS"
+  CI_GIT_TOKEN: "MoLyrsR7BVecs6Ek8JuD"
   DEV_DIR: "./dev"
   PUB_DIR: "./public"
+  J2_IN: "src/templates/simple.j2"
+  J2_DATA: "src/templates/blog.yaml"
+  J2_OUT: "$DEV_DIR/simple.html"
+  J2_FORMAT: "yaml"
   
 before_script:
+  - apk add git
   - git config --global credential.helper cache
   - git config --global user.email querl.dox.protonmail.com
   - git config --global user.name querl.dox
@@ -34,48 +38,75 @@ version_check:
     - coffee --version
     - terser --version
     - tsc --version
-    
-typescript_compile:watcher:
-  stage: test
-  environment:
-    name: development
-  script:
-    - tsc --showConfig true --project dev-tsconfig.json
-    - tsc --project dev-tsconfig.json
-    - ls -a -R "$DEV_DIR"
-  only:
-    changes:
-    - src/scripts/*.{ts}
 
+jinja2_blog:
+  variables:
+    J2_IN: "src/templates/index.html"
+    J2_DATA: "src/templates/blog.yaml"
+    J2_OUT: "$DEV_DIR/index.html"
+    J2_FORMAT: "yaml"
+  when: manual
+  artifacts:
+    name: "jinja_template"
+    expire_in: "1 day"
+    paths:
+      - $DEV_DIR
+  image: "registry.gitlab.com/querl.dox/python/build:jinja2"
+  stage: build
+  script:
+    - jinja2 $J2_IN --outfile=$J2_OUT
+    - ls -a -R "$DEV_DIR"
+
+jinja2:
+  when: manual
+  artifacts:
+    name: "jinja_template"
+    expire_in: "1 day"
+    paths:
+      - $DEV_DIR
+  image: "registry.gitlab.com/querl.dox/python/build:jinja2"
+  stage: build
+  script:
+    - jinja2 $J2_IN $J2_DATA --outfile=$J2_OUT --format=$J2_FORMAT
+    - ls -a -R "$DEV_DIR"
+  #only:
+  #  changes:
+  #  - src/templates/*.{j2}
     
 code_review:
+  variables:
+    J2_IN: "src/templates/index.html"
+    J2_DATA: "src/templates/blog.yaml"
+    J2_OUT: "$DEV_DIR/index.html"
+    J2_FORMAT: "yaml"
+    CI_COMMIT_TAG: "v0.1.9"
   artifacts:
     name: "code_review"
     expire_in: "1 day"
     paths:
-      #- $PUB_DIR
-      #- $DEV_DIR
-  variables:
-    CI_COMMIT_TAG: "code_review"
+      - $PUB_DIR
+      - $DEV_DIR
+  image: "registry.gitlab.com/querl.dox/python/build:jinja2"
   stage: build
   script: 
-    - cp -R ./src/assets $DEV_DIR/assets
-    - cp -R ./src/assets $PUB_DIR/assets
-    - tsc --showConfig true --project pages-tsconfig.json
-    - tsc --project pages-tsconfig.json
-    - tsc --showConfig true --project dev-tsconfig.json
-    - tsc --project dev-tsconfig.json
+    - cp -R ./src/styles $DEV_DIR
+    - cp -R ./src/styles $PUB_DIR
+    - jinja2 $J2_IN $J2_DATA --outfile=$J2_OUT --format=$J2_FORMAT
     - ls -a -R "$DEV_DIR"
     - ls -a -R "$PUB_DIR"
     - git add .
-    - git commit -m "Typescript Project Code Review"
+    - git commit -m "Project Code Review"
     - git push --force "https://${GITLAB_USER_NAME}:${CI_GIT_TOKEN}@${CI_REPOSITORY_URL#*@}" "HEAD:$CI_COMMIT_TAG"
   only:
     variables:
     - $CI_COMMIT_MESSAGE =~ /code review/   
 
 pages:
-  when: manual
+  variables:
+    J2_IN: "src/templates/index.html"
+    J2_DATA: "src/templates/blog.yaml"
+    J2_OUT: "$PUB_DIR/index.html"
+    J2_FORMAT: "yaml"
   artifacts:
     name: "pages"
     expire_in: "1 day"
@@ -84,11 +115,45 @@ pages:
   cache:
     paths:
       - ./vendor
+  image: "registry.gitlab.com/querl.dox/python/build:jinja2"
   stage: deploy
   script: 
-    - cp ./src/index.html $PUB_DIR/index.html
-    - tsc --project pages-tsconfig.json --showConfig true
-    - tsc --project pages-tsconfig.json
+    - cp -R ./assets $PUB_DIR
+    - jinja2 $J2_IN $J2_DATA --outfile=$J2_OUT --format=$J2_FORMAT
   only:
-    variables:
-    - $CI_COMMIT_MESSAGE =~ /pages/   
+    changes:
+    - src/templates/**/*.{html}
+
+video_conversion:
+  image: jlesage/handbrake
+  when: manual
+  variables:
+    CI_COMMIT_TAG: "video_conversion"
+  stage: build
+  script: 
+    - mkdir $DEV_DIR/tmp
+    - cp -R src/templates/blog/posts/2019/11/20191104_064332.mp4 $DEV_DIR/tmp/video1.mp4
+    - cp -R src/templates/blog/posts/2019/11/20191104_064355.mp4 $DEV_DIR/tmp/video2.mp4
+    - HandBrakeCLI -i $DEV_DIR/tmp/video1.mp4 -o $DEV_DIR/tmp/min-video1.mp4 -e x264 -q 28 -r 15 -B 64 -X 1280 -O
+    - HandBrakeCLI -i $DEV_DIR/tmp/video2.mp4 -o $DEV_DIR/tmp/min-video2.mp4 -e x264 -q 28 -r 15 -B 64 -X 1280 -O
+    - ls -a -R $DEV_DIR
+    - du -h -a "$DEV_DIR" 
+    - git add .
+    - git commit -m "Project Code Review"
+    - git push --force "https://${GITLAB_USER_NAME}:${CI_GIT_TOKEN}@${CI_REPOSITORY_URL#*@}" "HEAD:$CI_COMMIT_TAG"
+
+asset_download:
+  when: manual
+  variables:
+    CI_COMMIT_TAG: "asset_download"
+    WGET_PRE: "$DEV_DIR/tmp"
+  stage: build
+  script: 
+    - mkdir $WGET_PRE
+    - wget --directory-prefix="$WGET_PRE" https://images-na.ssl-images-amazon.com/images/I/61aUaQs9MML._SX319_BO1,204,203,200_.jpg
+    - wget --directory-prefix="$WGET_PRE" https://images-na.ssl-images-amazon.com/images/I/51XhaIdxkFL._SX335_BO1,204,203,200_.jpg
+    - ls -a -R "$WGET_PRE"
+    - du -h -a "$WGET_PRE" 
+    - git add .
+    - git commit -m "Asset Download"
+    - git push --force "https://${GITLAB_USER_NAME}:${CI_GIT_TOKEN}@${CI_REPOSITORY_URL#*@}" "HEAD:$CI_COMMIT_TAG"
