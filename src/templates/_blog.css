@@ -1,3 +1,16 @@
+faq {
+    margin: 0;
+}
+
+faq p {
+    padding: 15px;
+    background: #eee;
+    border-radius: 5px;
+}
+
+faq p::before {
+    content: '\201C';
+}
 blockquote {
     margin: 0;
 }
